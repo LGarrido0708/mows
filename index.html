@@ -1,11 +1,148 @@
 <html>
+
 <head>
-  <title>mows</title>
+  <title>MQTT</title>
+  <script src="jquery-3.4.1.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    .container {
+      width: 35%;
+      margin-left: 5%;
+      float: left;
+      background-color: #0256ab;
+      border-radius: 8%;
+      opacity: 0.9;
+      margin-top: -2%;
+    }
+
+    .table {
+      margin-top: 10%;
+    }
+
+    table {
+      
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 50%;
+      opacity: 0.9;
+      float: right;
+      margin-right: 5%;
+    }
+
+    td, th {
+      border: 3px solid white;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #0256ab;
+    }
+
+    tr:nth-child(even) {
+      background-color: #2179d1;
+    }
+    
+    body {
+      color: white;
+      background: url('https://blog.process-one.net/wp-content/uploads/2018/09/emqtt.jpg');
+    }
+
+    button {
+      color: black;
+      border-radius: 5%;
+    }
+    
+  </style>
 </head>
+
 <body>
-  <h1>MQTT</h1>
-  <p>My MQTT Web App</p>
+  <div class="container">
+    <div class="container3">
+      <h3>Broker</h3>
+      <form>
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <input value="ws://broker.hivemq.com:8000/mqtt" type="text" class="form-control input-sm" id="address">
+        </div>
+        <center>
+        <button id='btnConnect'>Connect</button>
+        <button id='btnDisconnect'>Disconnect</button>
+      </center>
+        <div class="form-group">
+          <br>
+          <label for="status">Status:</label>
+          <input type="text" class="form-control input-sm" id="status">
+        </div>
+        <span id="span"></span>
+      </form>
+    </div>
+    <div class="container1">
+      <h3>Subscribe</h3>
+      <form>
+        <div class="form-group">
+          <label for="Subscribe-topic">Topic:</label>
+          <input type="text" class="form-control input-sm" id="Subscribe-topic">
+        </div>
+        <center>
+        <button id='btnSubscribe'>Subscribe</button>
+        <button id='btnUnsubscribe'>Unsubscribe</button>
+      </center>
+      </form>
+    </div>
+    <div class="container2">
+      <h3>Publish</h3>
+      <form>
+        <div class="form-group">
+          <label for="Publish-topic">Topic:</label>
+          <input type="text" class="form-control input-sm" id="Publish-topic">
+        </div>
+        <div class="form-group">
+          <label for="Publish-payload">Payload:</label>
+          <input type="text" class="form-control input-sm" id="Publish-payload">
+        </div>
+        <center>
+        <button id='btnPublish'>Publish</button>
+      </center>
+      </form>
+    </div>
+  </div>
+  <div class="table">
+    <table>
+      
+      <tr>
+        <th>
+          <h3><center>Topic</center></h3>
+        </th>
+        <th>
+          <h3><center>Payload</center></h3>
+        </th>
+        <th>
+          <h3><center>Time Stamp</center></h3>
+        </th>
+      </tr>
+    </table>
+  </div>
+  <script>
+
+    $(document).ready(function () {
+      $(document).on('click', '#btnConnect', function () {
+        $('#status').val('Successfully connected.');
+      });
+
+      $(document).on('click', '#btnDisconnect', function () {
+        $('#status').val('Successfully disconnected.');
+      });
+    });
+
+
+  </script>
 </body>
 <script src="scripts/browserMqtt.js"></script>
 <script src="scripts/controller.js"></script>
+
 </html>
