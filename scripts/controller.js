@@ -2,31 +2,33 @@
 $(document).ready(function () {
 
   client = mqtt.connect("ws://broker.hivemq.com:8000/mqtt");
-  var data = '';
-  var x = '';
-  var con = false;
-  var a = false;
+  var dataSubcribeTo = '';
+  var subscribeValue = '';
+  var isconnected = false;
+  var isUnsubscribe = false;
 
   document.getElementById('btnSubscribe').addEventListener("click", function (e) {
     e.preventDefault();
-    a = false;
-    if (con == true) {
+    isUnsubscribe = false;
+    if (isconnected == false) {
+      alert('Connect first!');
+      
+    } else {
       if ($('#Subscribe-topic').val() == '') {
         alert('No Topic provided!')
       } else {
         client.subscribe($('#Subscribe-topic').val());
-        data = 'You have subscribed to the topic ' + $('#Subscribe-topic').val();
-        $('#span').html(data);
-        x = $('#Subscribe-topic').val();
+        dataSubcribeTo = 'You have subscribed to the topic ' + $('#Subscribe-topic').val();
+        $('#span').html(dataSubcribeTo);
+        subscribeValue = $('#Subscribe-topic').val();
       }
-    } else {
-      alert('Connect first!');
+      
     }
   })
 
   document.getElementById('btnUnsubscribe').addEventListener("click", function (e) {
     e.preventDefault();
-    a = true;
+    isUnsubscribe = true;
     $('#table').html('');
     $('#span').html('');
     $('#Subscribe-topic').val('');
@@ -37,19 +39,17 @@ $(document).ready(function () {
 
   document.getElementById('btnConnect').addEventListener("click", function (e) {
     e.preventDefault();
-    con = true;
-    client.on("connect", function () {
-      console.log("Successfully connected");
-    })
+    isconnected = true;
+    client.on("connect", function () {})
     $('#btnSubscribe').attr('disabled',false);
   })
 
   document.getElementById('btnDisconnect').addEventListener("click", function (e) {
     e.preventDefault();
-    data = '';
-    console.log('You are disconnected.');
+    dataSubcribeTo = '';
+    isconnected = false;
     client.end();
-    $('#span').html(data);
+    $('#span').html(dataSubcribeTo);
     $('#Subscribe-topic').val('');
     $('#Publish-topic').val('');
     $('#Publish-payload').val('');
@@ -58,11 +58,10 @@ $(document).ready(function () {
 
   document.getElementById('btnPublish').addEventListener("click", function (e) {
     e.preventDefault();
-    console.log('Published.');
-    if (a == true) {
+    if (isUnsubscribe == true) {
       alert('Subscribe first!')
     } else
-      if (con == true) {
+      if (isconnected == true) {
         if ($('#Publish-topic').val() == '' && $('#Publish-payload').val() == '') {
           alert('No Topic provided!')
         } else {
@@ -70,7 +69,7 @@ $(document).ready(function () {
             console.log($('#Publish-topic').val(), $('#Publish-payload').val());
           })
           client.publish($('#Publish-topic').val(), $('#Publish-payload').val());
-          if (x == $('#Publish-topic').val()) {
+          if (subscribeValue == $('#Publish-topic').val()) {
             var dt = new Date();
             var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
             $('table').append('<tr><td>'+$('#Publish-topic').val()+'</td><td>'+$('#Publish-payload').val()+'</td><td>'+time+'</td></tr>');
